@@ -80,8 +80,14 @@ export const ShopPage: React.FC = () => {
       }
 
       // 2. Category
-      if (filters.category && product.category !== filters.category) {
-        return false;
+      if (filters.category) {
+        const catObj = CATEGORIES.find(
+          (c) => c.slug === filters.category || c.id === filters.category
+        );
+        const matchSlugs = catObj ? [catObj.slug, catObj.id] : [filters.category];
+        if (!matchSlugs.includes(product.category)) {
+          return false;
+        }
       }
 
       // 3. Dietary

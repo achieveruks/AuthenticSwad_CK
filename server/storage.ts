@@ -126,6 +126,11 @@ class ProductStorage {
       shortDescription: data.shortDescription?.trim() || data.description?.slice(0, 100) || '',
       description: data.description?.trim() || '',
       story: data.story?.trim() || undefined,
+      culinaryTitle: data.culinaryTitle?.trim() || undefined,
+      cookingMethodTitle: data.cookingMethodTitle?.trim() || undefined,
+      cookingMethodDesc: data.cookingMethodDesc?.trim() || undefined,
+      aromaTitle: data.aromaTitle?.trim() || undefined,
+      aromaDesc: data.aromaDesc?.trim() || undefined,
       price: Number(data.price),
       originalPrice: data.originalPrice ? Number(data.originalPrice) : undefined,
       category: data.category,
@@ -195,6 +200,12 @@ class ProductStorage {
       image: data.image !== undefined ? data.image.trim() : existing.image,
       description: data.description !== undefined ? data.description.trim() : existing.description,
       shortDescription: data.shortDescription !== undefined ? data.shortDescription.trim() : existing.shortDescription,
+      story: data.story !== undefined ? (data.story ? data.story.trim() : undefined) : existing.story,
+      culinaryTitle: data.culinaryTitle !== undefined ? (data.culinaryTitle ? data.culinaryTitle.trim() : undefined) : existing.culinaryTitle,
+      cookingMethodTitle: data.cookingMethodTitle !== undefined ? (data.cookingMethodTitle ? data.cookingMethodTitle.trim() : undefined) : existing.cookingMethodTitle,
+      cookingMethodDesc: data.cookingMethodDesc !== undefined ? (data.cookingMethodDesc ? data.cookingMethodDesc.trim() : undefined) : existing.cookingMethodDesc,
+      aromaTitle: data.aromaTitle !== undefined ? (data.aromaTitle ? data.aromaTitle.trim() : undefined) : existing.aromaTitle,
+      aromaDesc: data.aromaDesc !== undefined ? (data.aromaDesc ? data.aromaDesc.trim() : undefined) : existing.aromaDesc,
     };
 
     this.products[index] = updated;

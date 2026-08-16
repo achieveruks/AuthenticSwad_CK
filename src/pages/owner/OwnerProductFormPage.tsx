@@ -2,7 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { OwnerLayout } from './OwnerLayout';
 import { useProducts } from '../../context/ProductContext';
 import { useNavigation } from '../../context/NavigationContext';
+import { CATEGORIES } from '../../data/products';
 import { Product } from '../../types';
+import { getCulinaryHighlights, CATEGORY_CULINARY_DEFAULTS, normalizeCategorySlug } from '../../utils/culinaryHighlights';
 import {
   ArrowLeft,
   Save,
@@ -43,9 +45,17 @@ export const OwnerProductFormPage: React.FC<OwnerProductFormPageProps> = ({
   const [name, setName] = useState('');
   const [hindiName, setHindiName] = useState('');
   const [slug, setSlug] = useState('');
-  const [category, setCategory] = useState('biryani');
+  const [category, setCategory] = useState(CATEGORIES[0]?.slug || 'dum-biryanis');
   const [shortDescription, setShortDescription] = useState('');
   const [description, setDescription] = useState('');
+  // Option B: Custom Culinary Story & Highlights State
+  const [story, setStory] = useState('');
+  const [culinaryTitle, setCulinaryTitle] = useState('');
+  const [cookingMethodTitle, setCookingMethodTitle] = useState('');
+  const [cookingMethodDesc, setCookingMethodDesc] = useState('');
+  const [aromaTitle, setAromaTitle] = useState('');
+  const [aromaDesc, setAromaDesc] = useState('');
+
   const [price, setPrice] = useState<string>('');
   const [originalPrice, setOriginalPrice] = useState<string>('');
   const [image, setImage] = useState('https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?q=80&w=800&auto=format&fit=crop');
@@ -87,9 +97,18 @@ export const OwnerProductFormPage: React.FC<OwnerProductFormPageProps> = ({
         setName(found.name);
         setHindiName(found.hindiName || '');
         setSlug(found.slug);
-        setCategory(found.category);
+        const matchedCat = CATEGORIES.find(
+          (c) => c.slug === found.category || c.id === found.category
+        );
+        setCategory(matchedCat ? matchedCat.slug : found.category);
         setShortDescription(found.shortDescription || '');
         setDescription(found.description || '');
+        setStory(found.story || '');
+        setCulinaryTitle(found.culinaryTitle || '');
+        setCookingMethodTitle(found.cookingMethodTitle || '');
+        setCookingMethodDesc(found.cookingMethodDesc || '');
+        setAromaTitle(found.aromaTitle || '');
+        setAromaDesc(found.aromaDesc || '');
         setPrice(String(found.price));
         setOriginalPrice(found.originalPrice ? String(found.originalPrice) : '');
         setImage(found.image || '');
@@ -160,6 +179,12 @@ export const OwnerProductFormPage: React.FC<OwnerProductFormPageProps> = ({
       category,
       shortDescription: shortDescription.trim() || description.slice(0, 100),
       description: description.trim(),
+      story: story.trim() || undefined,
+      culinaryTitle: culinaryTitle.trim() || undefined,
+      cookingMethodTitle: cookingMethodTitle.trim() || undefined,
+      cookingMethodDesc: cookingMethodDesc.trim() || undefined,
+      aromaTitle: aromaTitle.trim() || undefined,
+      aromaDesc: aromaDesc.trim() || undefined,
       price: numPrice,
       originalPrice: originalPrice ? parseFloat(originalPrice) : undefined,
       image: image.trim(),
@@ -306,13 +331,13 @@ export const OwnerProductFormPage: React.FC<OwnerProductFormPageProps> = ({
                   <select
                     value={category}
                     onChange={(e) => setCategory(e.target.value)}
-                    className="w-full px-3.5 py-2 bg-gray-50 border border-gray-200 rounded-xl text-xs text-gray-900 font-medium focus:outline-none focus:border-orange-500 focus:bg-white"
+                    className="w-full px-3.5 py-2 bg-gray-50 border border-gray-200 rounded-xl text-xs text-gray-900 font-medium focus:outline-none focus:border-orange-500 focus:bg-white cursor-pointer"
                   >
-                    <option value="biryani">Dum Biryanis & Rice</option>
-                    <option value="curries">Slow-Cooked Curries</option>
-                    <option value="starters">Tandoor & Starters</option>
-                    <option value="breads">Breads & Accompaniments</option>
-                    <option value="desserts">Artisanal Desserts & Drinks</option>
+                    {CATEGORIES.map((cat) => (
+                      <option key={cat.slug} value={cat.slug}>
+                        {cat.name}
+                      </option>
+                    ))}
                   </select>
                 </div>
 
@@ -347,7 +372,139 @@ export const OwnerProductFormPage: React.FC<OwnerProductFormPageProps> = ({
               </div>
             </div>
 
-            {/* Section 2: Pricing & Portions */}
+            {/* Section 2: Culinary Story & Cooking Method (Option B Custom Override) */}
+            <div className="bg-white rounded-2xl border border-gray-200 p-5 sm:p-6 shadow-2xs space-y-4">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 border-b border-gray-100 pb-3">
+                <div className="flex items-center gap-2">
+                  <Sparkles className="w-4 h-4 text-orange-600 shrink-0" />
+                  <h3 className="font-extrabold text-sm text-gray-900">
+                    Culinary Story & Cooking Highlights (Option B)
+                  </h3>
+                </div>
+                <span className="text-[11px] font-semibold text-orange-700 bg-orange-50 px-2.5 py-1 rounded-full border border-orange-200/60 w-fit">
+                  Optional • Category Defaults (Option A) apply if empty
+                </span>
+              </div>
+
+              {/* Notice & Rule summary */}
+              <div className="p-3.5 bg-amber-50/60 rounded-xl border border-amber-200/70 text-xs text-amber-950 space-y-1.5">
+                <div className="flex items-center gap-1.5 font-bold">
+                  <Info className="w-3.5 h-3.5 text-amber-600 shrink-0" />
+                  <span>How Culinary Story display works:</span>
+                </div>
+                <p className="text-[11px] text-amber-900 leading-relaxed">
+                  <strong>Option A (Default):</strong> If these fields are left empty, the storefront automatically displays authentic category-smart highlights (e.g. <em>Handi Dum Cooking & Saffron-Kewra</em> for Biryanis, <em>Slow Simmering & Desi Makhan</em> for Curries, <em>Live Charcoal Tandoor</em> for Starters).
+                </p>
+                <p className="text-[11px] text-amber-900 leading-relaxed">
+                  <strong>Option B (Custom):</strong> If you fill in your own custom culinary story or technique below, it will override the category default.
+                </p>
+              </div>
+
+              {/* Category Default Preview Box */}
+              {(() => {
+                const normCat = normalizeCategorySlug(category);
+                const defaults = CATEGORY_CULINARY_DEFAULTS[normCat];
+                if (!defaults) return null;
+                return (
+                  <div className="p-3.5 bg-gray-50 rounded-xl border border-gray-200 text-xs text-gray-600 space-y-2">
+                    <div className="flex items-center justify-between text-[11px] font-bold text-gray-700">
+                      <span>Default for selected category ({normCat}):</span>
+                      <span className="text-gray-500 font-normal">{defaults.heading}</span>
+                    </div>
+                    <p className="text-[11px] text-gray-500 italic bg-white p-2.5 rounded-lg border border-gray-100">
+                      "{defaults.story}"
+                    </p>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-[11px]">
+                      <div className="bg-white p-2 rounded-lg border border-gray-100">
+                        <span className="font-bold text-gray-800">Box 1: </span>
+                        <span className="text-gray-600">{defaults.highlight1.title}</span>
+                      </div>
+                      <div className="bg-white p-2 rounded-lg border border-gray-100">
+                        <span className="font-bold text-gray-800">Box 2: </span>
+                        <span className="text-gray-600">{defaults.highlight2.title}</span>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })()}
+
+              <div className="space-y-4 pt-1">
+                {/* Story / Chef's Note */}
+                <div>
+                  <label className="block text-xs font-bold text-gray-700 mb-1">
+                    Custom Culinary Story / Chef's Note (Optional)
+                  </label>
+                  <textarea
+                    rows={3}
+                    value={story}
+                    onChange={(e) => setStory(e.target.value)}
+                    placeholder="Enter custom heritage story or cooking ritual (overrides category default)..."
+                    className="w-full px-3.5 py-2 bg-gray-50 border border-gray-200 rounded-xl text-xs text-gray-900 font-medium focus:outline-none focus:border-orange-500 focus:bg-white"
+                  />
+                </div>
+
+                {/* Custom Heading */}
+                <div>
+                  <label className="block text-xs font-bold text-gray-700 mb-1">
+                    Custom Story Heading (Optional)
+                  </label>
+                  <input
+                    type="text"
+                    value={culinaryTitle}
+                    onChange={(e) => setCulinaryTitle(e.target.value)}
+                    placeholder="e.g. 70-Year-Old Old Delhi Daryaganj Recipe"
+                    className="w-full px-3.5 py-2 bg-gray-50 border border-gray-200 rounded-xl text-xs text-gray-900 font-medium focus:outline-none focus:border-orange-500 focus:bg-white"
+                  />
+                </div>
+
+                {/* Custom Highlights Grid */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  {/* Highlight 1 */}
+                  <div className="p-3 bg-gray-50 rounded-xl border border-gray-200 space-y-2">
+                    <label className="block text-xs font-bold text-gray-800">
+                      Custom Highlight Box 1 (Optional)
+                    </label>
+                    <input
+                      type="text"
+                      value={cookingMethodTitle}
+                      onChange={(e) => setCookingMethodTitle(e.target.value)}
+                      placeholder="Title: e.g. Sigdi Charcoal Cooking"
+                      className="w-full px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-xs text-gray-900 font-medium focus:outline-none focus:border-orange-500"
+                    />
+                    <textarea
+                      rows={2}
+                      value={cookingMethodDesc}
+                      onChange={(e) => setCookingMethodDesc(e.target.value)}
+                      placeholder="Description: e.g. Slow simmered on copper sigdi embers..."
+                      className="w-full px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-xs text-gray-900 font-medium focus:outline-none focus:border-orange-500"
+                    />
+                  </div>
+
+                  {/* Highlight 2 */}
+                  <div className="p-3 bg-gray-50 rounded-xl border border-gray-200 space-y-2">
+                    <label className="block text-xs font-bold text-gray-800">
+                      Custom Highlight Box 2 (Optional)
+                    </label>
+                    <input
+                      type="text"
+                      value={aromaTitle}
+                      onChange={(e) => setAromaTitle(e.target.value)}
+                      placeholder="Title: e.g. Kashmiri Mongra Saffron"
+                      className="w-full px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-xs text-gray-900 font-medium focus:outline-none focus:border-orange-500"
+                    />
+                    <textarea
+                      rows={2}
+                      value={aromaDesc}
+                      onChange={(e) => setAromaDesc(e.target.value)}
+                      placeholder="Description: e.g. Steeped in warm milk for rich golden tint..."
+                      className="w-full px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-xs text-gray-900 font-medium focus:outline-none focus:border-orange-500"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Section 3: Pricing & Portions */}
             <div className="bg-white rounded-2xl border border-gray-200 p-5 sm:p-6 shadow-2xs space-y-4">
               <h3 className="font-extrabold text-sm text-gray-900 flex items-center gap-2">
                 <span>Pricing & Kitchen Preparation</span>

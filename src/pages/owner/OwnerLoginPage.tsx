@@ -16,8 +16,8 @@ export const OwnerLoginPage: React.FC = () => {
   const { isAuthenticated, login } = useAuth();
   const { goToOwnerDashboard, goToHome } = useNavigation();
 
-  const [email, setEmail] = useState('achieveruks@gmail.com');
-  const [password, setPassword] = useState('gaonkaswaD1!');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -108,7 +108,7 @@ export const OwnerLoginPage: React.FC = () => {
                     setEmail(e.target.value);
                     setErrorMessage(null);
                   }}
-                  placeholder="achieveruks@gmail.com"
+                  placeholder="Enter your email"
                   className="w-full pl-9 pr-3 py-2 bg-gray-50 border border-gray-200 rounded-xl text-xs text-gray-900 font-medium placeholder:text-gray-400 focus:outline-none focus:border-orange-500 focus:bg-white transition-colors"
                 />
               </div>
@@ -166,14 +166,14 @@ export const OwnerLoginPage: React.FC = () => {
             </div>
           </form>
 
-          {/* Quick Notice for configured credentials */}
+          {/* Security Notice */}
           <div className="p-3 bg-gray-50 rounded-xl border border-gray-100 text-[11px] text-gray-500 space-y-1">
             <div className="flex items-center gap-1.5 font-bold text-gray-700">
               <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
-              <span>Secure Server Authentication</span>
+              <span>Restricted Access Portal</span>
             </div>
             <p className="text-[10px] text-gray-500">
-              Default credentials configured: <span className="font-mono text-gray-700 font-medium">achieveruks@gmail.com</span> / <span className="font-mono text-gray-700 font-medium">gaonkaswaD1!</span>
+              Authorized kitchen owners only. Please sign in with your configured credentials.
             </p>
           </div>
 

@@ -2,6 +2,7 @@ import React, { useState, useMemo } from 'react';
 import { OwnerLayout } from './OwnerLayout';
 import { useProducts } from '../../context/ProductContext';
 import { useNavigation } from '../../context/NavigationContext';
+import { CATEGORIES } from '../../data/products';
 import { Product } from '../../types';
 import {
   Plus,
@@ -39,6 +40,11 @@ export const OwnerProductsPage: React.FC = () => {
   // Toggle button loading
   const [actionLoadingId, setActionLoadingId] = useState<string | number | null>(null);
 
+  const getCategoryLabel = (cat: string) => {
+    const found = CATEGORIES.find((c) => c.slug === cat || c.id === cat);
+    return found ? found.name : cat.replace(/-/g, ' ');
+  };
+
   // Filtered Products
   const filteredProducts = useMemo(() => {
     return allProducts.filter((product) => {
@@ -51,9 +57,15 @@ export const OwnerProductsPage: React.FC = () => {
         if (!matchesName && !matchesSlug && !matchesCategory) return false;
       }
 
-      // Category
-      if (selectedCategory !== 'all' && product.category !== selectedCategory) {
-        return false;
+      // Category matching
+      if (selectedCategory !== 'all') {
+        const catObj = CATEGORIES.find(
+          (c) => c.slug === selectedCategory || c.id === selectedCategory
+        );
+        const matchSlugs = catObj ? [catObj.slug, catObj.id] : [selectedCategory];
+        if (!matchSlugs.includes(product.category)) {
+          return false;
+        }
       }
 
       // Active status
@@ -203,14 +215,19 @@ export const OwnerProductsPage: React.FC = () => {
             <select
               value={selectedCategory}
               onChange={(e) => setSelectedCategory(e.target.value)}
-              className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-xl text-xs text-gray-700 font-medium focus:outline-none focus:border-orange-500 focus:bg-white"
+              className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-xl text-xs text-gray-700 font-medium focus:outline-none focus:border-orange-500 focus:bg-white cursor-pointer"
             >
               <option value="all">All Categories ({allProducts.length})</option>
-              <option value="biryani">Dum Biryanis & Rice</option>
-              <option value="curries">Slow-Cooked Curries</option>
-              <option value="starters">Tandoor & Starters</option>
-              <option value="breads">Breads & Accompaniments</option>
-              <option value="desserts">Desserts & Drinks</option>
+              {CATEGORIES.map((cat) => {
+                const count = allProducts.filter(
+                  (p) => p.category === cat.slug || p.category === cat.id
+                ).length;
+                return (
+                  <option key={cat.slug} value={cat.slug}>
+                    {cat.name} ({count})
+                  </option>
+                );
+              })}
             </select>
           </div>
 
@@ -336,8 +353,8 @@ export const OwnerProductsPage: React.FC = () => {
 
                         {/* Category */}
                         <td className="py-3.5 px-3">
-                          <span className="inline-block bg-gray-100 text-gray-700 text-[10px] font-bold px-2 py-0.5 rounded capitalize">
-                            {product.category}
+                          <span className="inline-block bg-gray-100 text-gray-700 text-[10px] font-bold px-2 py-0.5 rounded">
+                            {getCategoryLabel(product.category)}
                           </span>
                         </td>
 
@@ -474,7 +491,7 @@ export const OwnerProductsPage: React.FC = () => {
                         />
                         <h4 className="font-bold text-xs text-gray-900 truncate">{product.name}</h4>
                       </div>
-                      <p className="text-[10px] text-gray-500 capitalize">{product.category}</p>
+                      <p className="text-[10px] text-gray-500 font-medium">{getCategoryLabel(product.category)}</p>
                       <div className="flex items-baseline gap-2 mt-1">
                         <span className="font-extrabold text-xs text-gray-950">₹{product.price}</span>
                         {product.originalPrice && (

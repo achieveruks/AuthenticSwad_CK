@@ -32,6 +32,11 @@ export interface Product {
   shortDescription: string;
   description: string;
   story?: string;
+  culinaryTitle?: string;
+  cookingMethodTitle?: string;
+  cookingMethodDesc?: string;
+  aromaTitle?: string;
+  aromaDesc?: string;
   price: number;
   originalPrice?: number;
   category: string;

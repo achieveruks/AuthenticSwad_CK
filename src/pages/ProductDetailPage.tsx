@@ -6,6 +6,7 @@ import { ProductGallery } from '../components/ProductGallery';
 import { QuantitySelector } from '../components/QuantitySelector';
 import { ProductCard } from '../components/ProductCard';
 import { ProductVariant, ProductAddon, Review } from '../types';
+import { getCulinaryHighlights } from '../utils/culinaryHighlights';
 import {
   Star,
   Clock,
@@ -533,32 +534,46 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ slug }) =>
           </button>
         </div>
 
-        {/* Tab 1: Details */}
-        {activeTab === 'details' && (
-          <div className="space-y-3 max-w-3xl text-xs text-gray-600 leading-relaxed">
-            <h3 className="font-bold text-sm text-gray-900">
-              Heirloom Dum Cooking Ritual
-            </h3>
-            <p>
-              {product.story ||
-                'Prepared according to classic heirloom culinary techniques, simmered gently over slow wood embers to ensure every grain and cut absorbs rich aromatics.'}
-            </p>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
-              <div className="p-3 bg-gray-50 rounded-xl border border-gray-200">
-                <h4 className="font-bold text-xs text-gray-900 mb-0.5">Traditional Handi Cooking</h4>
-                <p className="text-[11px] text-gray-500">
-                  Cooked in genuine unglazed clay earthenware to naturally regulate moisture and deliver signature earthy undertones.
+        {/* Tab 1: Details (Dynamic Category Culinary Highlights & Custom Story) */}
+        {activeTab === 'details' && (() => {
+          const culinary = getCulinaryHighlights(product);
+          return (
+            <div className="space-y-4 max-w-3xl text-xs text-gray-600 leading-relaxed">
+              <div className="space-y-1.5">
+                <div className="flex items-center gap-2">
+                  <Sparkles className="w-4 h-4 text-orange-600 shrink-0" />
+                  <h3 className="font-bold text-sm text-gray-900">
+                    {culinary.heading}
+                  </h3>
+                </div>
+                <p className="text-gray-700 leading-relaxed text-xs">
+                  {culinary.story}
                 </p>
               </div>
-              <div className="p-3 bg-gray-50 rounded-xl border border-gray-200">
-                <h4 className="font-bold text-xs text-gray-900 mb-0.5">Authentic Desi Spices</h4>
-                <p className="text-[11px] text-gray-500">
-                  Infused with Kashmiri saffron, stone-ground garam masala, and fragrant kewra dew.
-                </p>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+                <div className="p-3.5 bg-orange-50/60 rounded-xl border border-orange-200/80">
+                  <h4 className="font-bold text-xs text-orange-950 mb-1 flex items-center gap-1.5">
+                    <Flame className="w-3.5 h-3.5 text-orange-600 shrink-0" />
+                    <span>{culinary.highlight1.title}</span>
+                  </h4>
+                  <p className="text-[11px] text-gray-600 leading-normal">
+                    {culinary.highlight1.description}
+                  </p>
+                </div>
+                <div className="p-3.5 bg-amber-50/60 rounded-xl border border-amber-200/80">
+                  <h4 className="font-bold text-xs text-amber-950 mb-1 flex items-center gap-1.5">
+                    <Sparkles className="w-3.5 h-3.5 text-amber-600 shrink-0" />
+                    <span>{culinary.highlight2.title}</span>
+                  </h4>
+                  <p className="text-[11px] text-gray-600 leading-normal">
+                    {culinary.highlight2.description}
+                  </p>
+                </div>
               </div>
             </div>
-          </div>
-        )}
+          );
+        })()}
 
         {/* Tab 2: Ingredients */}
         {activeTab === 'ingredients' && (
