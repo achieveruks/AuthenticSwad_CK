@@ -91,12 +91,12 @@ export const Footer: React.FC = () => {
                 <Flame className="w-5 h-5 fill-white" />
               </div>
               <span className="font-extrabold text-lg text-white tracking-tight">
-                Authentic <span className="text-orange-500">Swad</span>
+                Gaon Ka <span className="text-orange-500">Swad</span>
               </span>
             </div>
 
             <p className="text-xs text-gray-400 leading-relaxed max-w-sm">
-              Authentic Swad is a modern artisanal cloud kitchen dedicated to reviving royal Awadhi, Nizami, and rustic regional recipes with pure desi ghee and heirloom spices.
+              Gaon Ka Swad is a modern artisanal cloud kitchen dedicated to reviving rustic village and royal regional recipes with pure desi ghee and heirloom spices.
             </p>
 
             <div className="pt-1 flex items-center gap-3 text-gray-400 text-xs">
@@ -231,7 +231,7 @@ export const Footer: React.FC = () => {
 
         {/* Bottom copyright and legal */}
         <div className="pt-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-gray-500">
-          <p>© {new Date().getFullYear()} Authentic Swad Cloud Kitchen. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} Gaon Ka Swad Cloud Kitchen. All rights reserved.</p>
           <div className="flex items-center gap-3 text-gray-400 text-[11px]">
             <span>Crafted with <Heart className="w-3 h-3 text-rose-500 inline fill-rose-500" /> for food lovers</span>
             <span>•</span>

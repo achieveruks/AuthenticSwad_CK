@@ -38,7 +38,7 @@ export const Navbar: React.FC = () => {
               <Sparkles className="w-3 h-3" /> Special Offer
             </span>
             <span className="truncate">
-              Use code <strong className="text-orange-400 font-bold">SWAD15</strong> for 15% OFF • Free Delivery on orders over ₹499!
+              Use code <strong className="text-orange-400 font-bold">GAON15</strong> for 15% OFF • Free Delivery on orders over ₹499!
             </span>
           </div>
 
@@ -64,12 +64,12 @@ export const Navbar: React.FC = () => {
             className="flex items-center gap-2.5 cursor-pointer select-none group shrink-0"
           >
             <div className="w-8 h-8 sm:w-9 sm:h-9 bg-orange-600 rounded-lg flex items-center justify-center text-white font-bold text-lg sm:text-xl shadow-xs group-hover:scale-105 transition-transform">
-              S
+              G
             </div>
             <div>
               <div className="flex items-center gap-1.5">
                 <span className="font-heading font-bold text-lg sm:text-xl text-gray-900 tracking-tight">
-                  Authentic <span className="text-orange-600">Swad</span>
+                  Gaon Ka <span className="text-orange-600">Swad</span>
                 </span>
               </div>
             </div>

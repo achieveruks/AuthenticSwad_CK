@@ -238,7 +238,7 @@ export const CartPage: React.FC = () => {
                       setCouponCode(e.target.value.toUpperCase());
                       setCouponError('');
                     }}
-                    placeholder="Enter code (SWAD15 / WELCOME50)"
+                    placeholder="Enter code (GAON15 / WELCOME50)"
                     className="flex-1 px-3 py-1.5 bg-gray-50 border border-gray-200 rounded-xl text-xs uppercase font-medium focus:outline-none focus:border-orange-500 focus:bg-white"
                   />
                   <button

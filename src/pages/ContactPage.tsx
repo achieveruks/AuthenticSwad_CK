@@ -72,7 +72,7 @@ export const ContactPage: React.FC = () => {
             <span>We Love Hearing From Food Enthusiasts</span>
           </div>
           <h1 className="font-extrabold text-2xl sm:text-4xl text-gray-950">
-            Get in Touch with Authentic Swad
+            Get in Touch with Gaon Ka Swad
           </h1>
           <p className="text-xs sm:text-sm text-gray-600 max-w-xl mx-auto">
             Have questions about an order, want to arrange party catering, or give feedback to our Master Chef? We are here to help.
@@ -108,8 +108,8 @@ export const ContactPage: React.FC = () => {
                   </div>
                   <div>
                     <p className="font-bold text-gray-900">Email Inquiries</p>
-                    <p className="text-gray-700 font-medium">orders@authenticswad.in</p>
-                    <p className="text-[10px] text-gray-400">catering@authenticswad.in</p>
+                    <p className="text-gray-700 font-medium">orders@gaonkaswad.in</p>
+                    <p className="text-[10px] text-gray-400">catering@gaonkaswad.in</p>
                   </div>
                 </div>
 
@@ -140,7 +140,7 @@ export const ContactPage: React.FC = () => {
               {/* WhatsApp Quick Order button */}
               <div className="pt-1">
                 <a
-                  href="https://wa.me/919876543210?text=Hi%20Authentic%20Swad%2C%20I%20would%20like%20to%20place%20an%20order"
+                  href="https://wa.me/919876543210?text=Hi%20Gaon%20Ka%20Swad%2C%20I%20would%20like%20to%20place%20an%20order"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-full py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 shadow-xs transition-colors"
@@ -175,7 +175,7 @@ export const ContactPage: React.FC = () => {
                     Thank You, {form.name}!
                   </h3>
                   <p className="text-xs text-gray-500 max-w-md mx-auto">
-                    We have received your message. A dedicated Authentic Swad culinary manager will connect with you via phone or email shortly.
+                    We have received your message. A dedicated Gaon Ka Swad culinary manager will connect with you via phone or email shortly.
                   </p>
                   <button
                     type="button"

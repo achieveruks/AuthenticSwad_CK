@@ -246,7 +246,7 @@ export const HomePage: React.FC = () => {
 
                 <div className="flex items-center gap-1.5 text-xs text-orange-400 font-semibold">
                   <Tag className="w-3.5 h-3.5" />
-                  <span>Use code <strong>SWAD15</strong> for 15% OFF</span>
+                  <span>Use code <strong>GAON15</strong> for 15% OFF</span>
                 </div>
               </div>
             </div>
@@ -308,7 +308,7 @@ export const HomePage: React.FC = () => {
         </div>
       </section>
 
-      {/* 6. WHY CHOOSE AUTHENTIC SWAD */}
+      {/* 6. WHY CHOOSE GAON KA SWAD */}
       <section className="bg-gray-100 border-y border-gray-200 py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-2xl mx-auto mb-10">
@@ -407,7 +407,7 @@ export const HomePage: React.FC = () => {
                 ))}
               </div>
               <p className="text-xs text-gray-600 leading-relaxed italic">
-                &quot;As a vegetarian, finding rich authentic Dal Makhani without excessive creaminess is rare. Authentic Swad slow-cooked dal is 10/10 perfection.&quot;
+                &quot;As a vegetarian, finding rich authentic Dal Makhani without excessive creaminess is rare. Gaon Ka Swad slow-cooked dal is 10/10 perfection.&quot;
               </p>
             </div>
             <div className="pt-3 border-t border-gray-100 flex items-center justify-between mt-3">
@@ -453,7 +453,7 @@ export const HomePage: React.FC = () => {
               Ready to Taste Authentic Royal Recipes?
             </h3>
             <p className="text-xs text-orange-100 max-w-md">
-              Order now and get 15% off with code <strong>SWAD15</strong> + Free insulated express delivery.
+              Order now and get 15% off with code <strong>GAON15</strong> + Free insulated express delivery.
             </p>
           </div>
 

@@ -650,6 +650,13 @@ export const PRODUCTS: Product[] = [
 
 export const COUPONS: Coupon[] = [
   {
+    code: 'GAON15',
+    discountType: 'percentage',
+    discountValue: 15,
+    minOrderValue: 499,
+    description: '15% OFF on orders above ₹499'
+  },
+  {
     code: 'SWAD15',
     discountType: 'percentage',
     discountValue: 15,

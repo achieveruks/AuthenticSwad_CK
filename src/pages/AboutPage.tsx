@@ -23,7 +23,7 @@ export const AboutPage: React.FC = () => {
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-3">
           <div className="inline-flex items-center gap-1.5 bg-orange-50 text-orange-900 border border-orange-200 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider">
             <Flame className="w-3.5 h-3.5 text-orange-600 fill-orange-600" />
-            <span>The Heritage Behind Authentic Swad</span>
+            <span>The Heritage Behind Gaon Ka Swad</span>
           </div>
 
           <h1 className="font-extrabold text-2xl sm:text-4xl text-gray-950 tracking-tight leading-tight">
@@ -34,7 +34,7 @@ export const AboutPage: React.FC = () => {
           </h1>
 
           <p className="text-xs sm:text-sm text-gray-600 max-w-2xl mx-auto leading-relaxed">
-            Born out of a deep reverence for forgotten royal recipes and slow-cooking traditions, Authentic Swad brings the soulful tastes of heritage Indian households straight to modern dining tables.
+            Born out of a deep reverence for forgotten village recipes and slow-cooking traditions, Gaon Ka Swad brings the soulful tastes of rustic Indian households straight to modern dining tables.
           </p>
         </div>
       </section>
@@ -53,7 +53,7 @@ export const AboutPage: React.FC = () => {
             </h2>
 
             <p className="text-xs text-gray-600 leading-relaxed">
-              Authentic Swad was founded with a singular conviction: genuine taste cannot be rushed. In a world of 10-minute industrial microwave prep, we chose the path of slow-simmered handis, 24-hour charcoal embers, whole stone-ground spices, and pure cow desi ghee.
+              Gaon Ka Swad was founded with a singular conviction: genuine taste cannot be rushed. In a world of 10-minute industrial microwave prep, we chose the path of slow-simmered handis, 24-hour charcoal embers, whole stone-ground spices, and pure cow desi ghee.
             </p>
 
             <p className="text-xs text-gray-600 leading-relaxed">
@@ -93,7 +93,7 @@ export const AboutPage: React.FC = () => {
               Our Core Philosophy
             </span>
             <h2 className="font-extrabold text-xl sm:text-3xl text-white">
-              The 4 Pillars of Authentic Swad
+              The 4 Pillars of Gaon Ka Swad
             </h2>
             <p className="text-xs text-gray-400">
               Strict culinary standards that define every single order we dispatch.

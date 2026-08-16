@@ -232,7 +232,7 @@ export const CartDrawer: React.FC = () => {
                                 setCouponInput(e.target.value.toUpperCase());
                                 setCouponError('');
                               }}
-                              placeholder="Coupon code (e.g. SWAD15)"
+                              placeholder="Coupon code (e.g. GAON15)"
                               className="w-full pl-7 pr-3 py-1.5 text-xs uppercase bg-white border border-gray-200 rounded-lg focus:outline-none focus:border-orange-500"
                             />
                           </div>

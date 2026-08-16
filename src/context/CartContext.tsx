@@ -45,8 +45,8 @@ interface CartContextType {
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
-const CART_STORAGE_KEY = 'authenticswad_cart_v1';
-const COUPON_STORAGE_KEY = 'authenticswad_coupon_v1';
+const CART_STORAGE_KEY = 'gaonkaswad_cart_v1';
+const COUPON_STORAGE_KEY = 'gaonkaswad_coupon_v1';
 
 export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [cart, setCart] = useState<CartItem[]>(() => {
@@ -225,7 +225,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const found = COUPONS.find((c) => c.code === formatted);
 
     if (!found) {
-      return { success: false, message: 'Invalid coupon code. Try SWAD15 or WELCOME50.' };
+      return { success: false, message: 'Invalid coupon code. Try GAON15 or WELCOME50.' };
     }
 
     if (subtotal < found.minOrderValue) {

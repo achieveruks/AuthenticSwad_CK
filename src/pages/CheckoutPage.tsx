@@ -104,7 +104,7 @@ export const CheckoutPage: React.FC = () => {
     setTimeout(() => {
       const randomOrderNum = Math.floor(100000 + Math.random() * 900000);
       const newOrder: Order = {
-        orderId: `ASWAD-${randomOrderNum}`,
+        orderId: `GKSWAD-${randomOrderNum}`,
         createdAt: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
         items: [...cart],
         subtotal,
@@ -820,7 +820,7 @@ export const CheckoutPage: React.FC = () => {
               </button>
 
               <p className="text-center text-[10px] text-gray-400">
-                By placing your order, you agree to Authentic Swad terms & gourmet delivery policy.
+                By placing your order, you agree to Gaon Ka Swad terms & gourmet delivery policy.
               </p>
             </div>
           </div>
