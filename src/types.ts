@@ -1,0 +1,126 @@
+export interface ProductVariant {
+  id: string;
+  name: string;
+  price: number;
+  originalPrice?: number;
+  serves: string;
+  weight: string;
+}
+
+export interface ProductAddon {
+  id: string;
+  name: string;
+  price: number;
+  isVeg: boolean;
+}
+
+export interface Review {
+  id: string;
+  userName: string;
+  userLocation: string;
+  rating: number;
+  date: string;
+  comment: string;
+  verified: boolean;
+}
+
+export interface Product {
+  id: number;
+  name: string;
+  hindiName?: string;
+  slug: string;
+  shortDescription: string;
+  description: string;
+  story?: string;
+  price: number;
+  originalPrice?: number;
+  category: string;
+  rating: number;
+  reviewsCount: number;
+  image: string;
+  galleryImages: string[];
+  isVeg: boolean;
+  isJainFriendly?: boolean;
+  spiceLevel: 'Mild' | 'Medium' | 'Spicy' | 'Extra Spicy';
+  prepTimeMinutes: number;
+  serves: string;
+  calories?: number;
+  featured: boolean;
+  bestseller: boolean;
+  newArrival?: boolean;
+  chefSpecial?: boolean;
+  variants?: ProductVariant[];
+  addons?: ProductAddon[];
+  ingredients: string[];
+  allergens?: string[];
+  reviewsList?: Review[];
+}
+
+export interface Category {
+  id: string;
+  name: string;
+  slug: string;
+  tagline: string;
+  image: string;
+  itemCount: number;
+  iconName: string;
+}
+
+export interface CartItem {
+  id: string; // generated unique id (productId + variantId + addons)
+  product: Product;
+  selectedVariant?: ProductVariant;
+  selectedSpiceLevel?: string;
+  selectedAddons?: ProductAddon[];
+  quantity: number;
+  unitPrice: number;
+}
+
+export interface Coupon {
+  code: string;
+  discountType: 'percentage' | 'fixed';
+  discountValue: number;
+  minOrderValue: number;
+  description: string;
+}
+
+export interface CheckoutFormData {
+  fullName: string;
+  email: string;
+  phone: string;
+  address: string;
+  landmark?: string;
+  city: string;
+  state: string;
+  pincode: string;
+  deliverySlot: 'immediate' | 'lunch' | 'dinner' | 'custom';
+  deliveryNotes?: string;
+  paymentMethod: 'cod' | 'upi' | 'card' | 'netbanking';
+  includeCutlery: boolean;
+}
+
+export interface Order {
+  orderId: string;
+  createdAt: string;
+  items: CartItem[];
+  subtotal: number;
+  discount: number;
+  deliveryFee: number;
+  packagingFee: number;
+  gst: number;
+  total: number;
+  couponCode?: string;
+  customerDetails: CheckoutFormData;
+  status: 'Received' | 'Preparing in Kitchen' | 'Out for Delivery' | 'Delivered';
+  estimatedDeliveryMinutes: number;
+}
+
+export interface FilterState {
+  searchQuery: string;
+  category: string;
+  dietary: 'all' | 'veg' | 'non-veg';
+  spiceLevel: string;
+  minPrice: number;
+  maxPrice: number;
+  sortBy: 'popular' | 'price-low' | 'price-high' | 'rating' | 'newest';
+}

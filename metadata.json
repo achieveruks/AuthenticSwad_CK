@@ -1,0 +1,6 @@
+{
+  "name": "Authentic Swad",
+  "description": "Modern cloud kitchen e-commerce website for authentic homestyle delicacies with rich menu, cart, filters, and demo checkout.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
