@@ -1,6 +1,7 @@
 import React from 'react';
-import { CATEGORIES, PRODUCTS } from '../data/products';
+import { CATEGORIES } from '../data/products';
 import { useNavigation } from '../context/NavigationContext';
+import { useProducts } from '../context/ProductContext';
 import { CategoryCard } from '../components/CategoryCard';
 import { ProductCard } from '../components/ProductCard';
 import {
@@ -12,6 +13,7 @@ import {
 
 export const CategoriesPage: React.FC = () => {
   const { goToShop } = useNavigation();
+  const { activeProducts } = useProducts();
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 space-y-6">
@@ -34,7 +36,7 @@ export const CategoriesPage: React.FC = () => {
       {/* Categories Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
         {CATEGORIES.map((category) => {
-          const categoryProducts = PRODUCTS.filter((p) => p.category === category.slug);
+          const categoryProducts = activeProducts.filter((p) => p.category === category.slug);
           return (
             <div
               key={category.id}
@@ -52,7 +54,7 @@ export const CategoriesPage: React.FC = () => {
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
                   <div className="absolute bottom-2.5 left-3.5 right-3.5 text-white">
                     <span className="text-[10px] font-bold text-orange-400 uppercase tracking-wider">
-                      {category.itemCount} Delicacies
+                      {categoryProducts.length} Delicacies
                     </span>
                     <h3 className="font-bold text-base text-white">
                       {category.name}

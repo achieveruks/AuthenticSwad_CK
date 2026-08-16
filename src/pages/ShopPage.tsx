@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useNavigation } from '../context/NavigationContext';
-import { PRODUCTS, CATEGORIES } from '../data/products';
+import { useProducts } from '../context/ProductContext';
+import { CATEGORIES } from '../data/products';
 import { ProductCard } from '../components/ProductCard';
 import { FilterSidebar } from '../components/FilterSidebar';
 import { FilterState, Product } from '../types';
@@ -18,6 +19,7 @@ import { motion, AnimatePresence } from 'motion/react';
 
 export const ShopPage: React.FC = () => {
   const { currentRoute, goToShop } = useNavigation();
+  const { activeProducts } = useProducts();
 
   // Extract route params if passed
   const initialCategory = currentRoute.path === '/shop' ? currentRoute.category || '' : '';
@@ -62,7 +64,7 @@ export const ShopPage: React.FC = () => {
 
   // Filter & Sort computation
   const filteredProducts = useMemo(() => {
-    return PRODUCTS.filter((product) => {
+    return activeProducts.filter((product) => {
       // 1. Search Query
       if (filters.searchQuery.trim()) {
         const query = filters.searchQuery.toLowerCase().trim();
@@ -213,7 +215,7 @@ export const ShopPage: React.FC = () => {
                 : 'bg-white border border-gray-200 text-gray-700 hover:bg-gray-50'
             }`}
           >
-            All Specialties ({PRODUCTS.length})
+            All Specialties ({activeProducts.length})
           </button>
 
           {CATEGORIES.map((cat) => (

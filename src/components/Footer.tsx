@@ -17,7 +17,7 @@ import {
 import { CATEGORIES } from '../data/products';
 
 export const Footer: React.FC = () => {
-  const { goToHome, goToShop, goToCategories, goToAbout, goToContact } = useNavigation();
+  const { goToHome, goToShop, goToCategories, goToAbout, goToContact, goToOwnerLogin } = useNavigation();
   const { showToast } = useCart();
   const [newsletterEmail, setNewsletterEmail] = useState('');
 
@@ -194,6 +194,15 @@ export const Footer: React.FC = () => {
                   className="hover:text-orange-400 transition-colors"
                 >
                   Contact & Support
+                </button>
+              </li>
+              <li>
+                <button
+                  type="button"
+                  onClick={goToOwnerLogin}
+                  className="hover:text-orange-400 transition-colors"
+                >
+                  Owner Login
                 </button>
               </li>
             </ul>

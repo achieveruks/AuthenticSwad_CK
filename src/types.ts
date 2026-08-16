@@ -25,7 +25,7 @@ export interface Review {
 }
 
 export interface Product {
-  id: number;
+  id: number | string;
   name: string;
   hindiName?: string;
   slug: string;
@@ -35,25 +35,41 @@ export interface Product {
   price: number;
   originalPrice?: number;
   category: string;
-  rating: number;
-  reviewsCount: number;
+  rating?: number;
+  reviewsCount?: number;
   image: string;
-  galleryImages: string[];
+  galleryImages?: string[];
   isVeg: boolean;
   isJainFriendly?: boolean;
-  spiceLevel: 'Mild' | 'Medium' | 'Spicy' | 'Extra Spicy';
-  prepTimeMinutes: number;
-  serves: string;
+  spiceLevel?: 'Mild' | 'Medium' | 'Spicy' | 'Extra Spicy';
+  prepTimeMinutes?: number;
+  serves?: string;
   calories?: number;
   featured: boolean;
   bestseller: boolean;
   newArrival?: boolean;
   chefSpecial?: boolean;
+  active?: boolean;
+  inStock?: boolean;
   variants?: ProductVariant[];
   addons?: ProductAddon[];
-  ingredients: string[];
+  ingredients?: string[];
   allergens?: string[];
   reviewsList?: Review[];
+}
+
+export interface OwnerUser {
+  email: string;
+  role: 'owner' | 'admin';
+  name?: string;
+}
+
+export interface DashboardStats {
+  totalProducts: number;
+  activeProducts: number;
+  outOfStockProducts: number;
+  featuredProducts: number;
+  bestsellerProducts: number;
 }
 
 export interface Category {

@@ -24,6 +24,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, viewMode = 'g
 
   const handleQuickAdd = (e: React.MouseEvent) => {
     e.stopPropagation();
+    if (product.inStock === false) return;
     if (product.variants && product.variants.length > 0) {
       // If product has complex variants, navigate to product detail
       goToProduct(product.slug);
@@ -75,13 +76,16 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, viewMode = 'g
           {/* Dietary & Badge Top Row */}
           <div className="absolute top-2 left-2 right-2 flex items-center justify-between pointer-events-none">
             <div className="flex items-center gap-1.5">
-              {/* Special Badges */}
-              {product.bestseller && (
+              {/* Out of Stock or Special Badges */}
+              {product.inStock === false ? (
+                <span className="px-2 py-0.5 bg-gray-900/90 text-amber-300 font-black text-[10px] uppercase tracking-wider rounded shadow-xs border border-amber-400/40">
+                  OUT OF STOCK
+                </span>
+              ) : product.bestseller ? (
                 <span className="px-2 py-0.5 bg-green-500 text-white font-bold text-[10px] uppercase tracking-wider rounded shadow-xs">
                   BESTSELLER
                 </span>
-              )}
-              {product.spiceLevel === 'Spicy' || product.spiceLevel === 'Extra Spicy' ? (
+              ) : product.spiceLevel === 'Spicy' || product.spiceLevel === 'Extra Spicy' ? (
                 <span className="px-2 py-0.5 bg-red-500 text-white font-bold text-[10px] uppercase tracking-wider rounded shadow-xs">
                   SPICY
                 </span>
@@ -154,7 +158,11 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, viewMode = 'g
         </div>
 
         {/* Cart Actions */}
-        {totalQuantityInCart > 0 ? (
+        {product.inStock === false ? (
+          <span className="text-[10px] font-bold text-amber-800 bg-amber-50 border border-amber-200 px-2 py-1 rounded-md">
+            Out of Stock
+          </span>
+        ) : totalQuantityInCart > 0 ? (
           <div
             onClick={(e) => e.stopPropagation()}
             className="inline-flex items-center bg-orange-50 border border-orange-300 rounded-lg px-2 py-0.5 text-xs font-bold text-orange-900 gap-1.5 shadow-xs"

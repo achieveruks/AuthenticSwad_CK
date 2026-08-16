@@ -9,7 +9,12 @@ export type AppRoute =
   | { path: '/checkout' }
   | { path: '/about' }
   | { path: '/contact' }
-  | { path: '/order-success'; orderId: string };
+  | { path: '/order-success'; orderId: string }
+  | { path: '/owner/login' }
+  | { path: '/owner/dashboard' }
+  | { path: '/owner/products' }
+  | { path: '/owner/products/new' }
+  | { path: '/owner/products/edit'; productId: string | number };
 
 interface NavigationContextType {
   currentRoute: AppRoute;
@@ -23,6 +28,11 @@ interface NavigationContextType {
   goToContact: () => void;
   goToCategories: () => void;
   goToOrderSuccess: (orderId: string) => void;
+  goToOwnerLogin: () => void;
+  goToOwnerDashboard: () => void;
+  goToOwnerProducts: () => void;
+  goToOwnerAddProduct: () => void;
+  goToOwnerEditProduct: (productId: string | number) => void;
 }
 
 const NavigationContext = createContext<NavigationContextType | undefined>(undefined);
@@ -34,6 +44,29 @@ function parseHash(hash: string): AppRoute {
 
   const [main, queryString] = cleanHash.split('?');
   const params = new URLSearchParams(queryString || '');
+
+  // Owner Routes
+  if (main === 'owner/login' || main === 'owner-login') {
+    return { path: '/owner/login' };
+  }
+  if (main === 'owner/dashboard' || main === 'owner-dashboard') {
+    return { path: '/owner/dashboard' };
+  }
+  if (main === 'owner/products/new' || main === 'owner-products-new') {
+    return { path: '/owner/products/new' };
+  }
+  if (main.startsWith('owner/products/edit/')) {
+    const productId = main.replace('owner/products/edit/', '');
+    return { path: '/owner/products/edit', productId };
+  }
+  if (main.startsWith('owner/products/') && main.endsWith('/edit')) {
+    const parts = main.split('/');
+    const productId = parts[2];
+    return { path: '/owner/products/edit', productId };
+  }
+  if (main === 'owner/products' || main === 'owner-products') {
+    return { path: '/owner/products' };
+  }
 
   if (main === 'shop') {
     return {
@@ -90,6 +123,16 @@ function routeToHash(route: AppRoute): string {
       return '#/contact';
     case '/order-success':
       return `#/order-success/${route.orderId}`;
+    case '/owner/login':
+      return '#/owner/login';
+    case '/owner/dashboard':
+      return '#/owner/dashboard';
+    case '/owner/products':
+      return '#/owner/products';
+    case '/owner/products/new':
+      return '#/owner/products/new';
+    case '/owner/products/edit':
+      return `#/owner/products/edit/${route.productId}`;
     default:
       return '#/';
   }
@@ -134,6 +177,12 @@ export const NavigationProvider: React.FC<{ children: React.ReactNode }> = ({ ch
   const goToCategories = () => navigate({ path: '/categories' });
   const goToOrderSuccess = (orderId: string) =>
     navigate({ path: '/order-success', orderId });
+  const goToOwnerLogin = () => navigate({ path: '/owner/login' });
+  const goToOwnerDashboard = () => navigate({ path: '/owner/dashboard' });
+  const goToOwnerProducts = () => navigate({ path: '/owner/products' });
+  const goToOwnerAddProduct = () => navigate({ path: '/owner/products/new' });
+  const goToOwnerEditProduct = (productId: string | number) =>
+    navigate({ path: '/owner/products/edit', productId });
 
   return (
     <NavigationContext.Provider
@@ -148,7 +197,12 @@ export const NavigationProvider: React.FC<{ children: React.ReactNode }> = ({ ch
         goToAbout,
         goToContact,
         goToCategories,
-        goToOrderSuccess
+        goToOrderSuccess,
+        goToOwnerLogin,
+        goToOwnerDashboard,
+        goToOwnerProducts,
+        goToOwnerAddProduct,
+        goToOwnerEditProduct,
       }}
     >
       {children}

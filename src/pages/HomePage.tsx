@@ -1,7 +1,8 @@
 import React from 'react';
 import { useNavigation } from '../context/NavigationContext';
 import { useCart } from '../context/CartContext';
-import { PRODUCTS, CATEGORIES } from '../data/products';
+import { useProducts } from '../context/ProductContext';
+import { CATEGORIES } from '../data/products';
 import { ProductCard } from '../components/ProductCard';
 import { CategoryCard } from '../components/CategoryCard';
 import {
@@ -25,10 +26,11 @@ import { motion } from 'motion/react';
 export const HomePage: React.FC = () => {
   const { goToShop, goToProduct, goToCategories, goToAbout } = useNavigation();
   const { addToCart } = useCart();
+  const { activeProducts } = useProducts();
 
-  const bestsellers = PRODUCTS.filter((p) => p.bestseller).slice(0, 4);
-  const chefSignatures = PRODUCTS.filter((p) => p.chefSpecial).slice(0, 4);
-  const newArrivals = PRODUCTS.filter((p) => p.newArrival).slice(0, 4);
+  const bestsellers = activeProducts.filter((p) => p.bestseller).slice(0, 4);
+  const chefSignatures = activeProducts.filter((p) => p.chefSpecial).slice(0, 4);
+  const newArrivals = activeProducts.filter((p) => p.newArrival).slice(0, 4);
 
   return (
     <div className="space-y-12 sm:space-y-16 pb-16">

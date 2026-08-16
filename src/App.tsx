@@ -1,12 +1,14 @@
 import React from 'react';
 import { NavigationProvider, useNavigation } from './context/NavigationContext';
 import { CartProvider, useCart } from './context/CartContext';
+import { AuthProvider } from './context/AuthContext';
+import { ProductProvider } from './context/ProductContext';
 import { Navbar } from './components/Navbar';
 import { Footer } from './components/Footer';
 import { CartDrawer } from './components/CartDrawer';
 import { Toast } from './components/Toast';
 
-// Pages
+// Customer Pages
 import { HomePage } from './pages/HomePage';
 import { ShopPage } from './pages/ShopPage';
 import { ProductDetailPage } from './pages/ProductDetailPage';
@@ -16,11 +18,67 @@ import { AboutPage } from './pages/AboutPage';
 import { ContactPage } from './pages/ContactPage';
 import { CategoriesPage } from './pages/CategoriesPage';
 
+// Owner Pages
+import { OwnerLoginPage } from './pages/owner/OwnerLoginPage';
+import { OwnerDashboardPage } from './pages/owner/OwnerDashboardPage';
+import { OwnerProductsPage } from './pages/owner/OwnerProductsPage';
+import { OwnerProductFormPage } from './pages/owner/OwnerProductFormPage';
+
 const AppContent: React.FC = () => {
   const { currentRoute } = useNavigation();
-  const { isCartDrawerOpen, setIsCartDrawerOpen } = useCart();
 
-  // Page Routing Logic
+  // 1. Owner Portal Routing (Self-contained layout)
+  if (currentRoute.path.startsWith('/owner/')) {
+    switch (currentRoute.path) {
+      case '/owner/login':
+        return (
+          <>
+            <OwnerLoginPage />
+            <Toast />
+          </>
+        );
+      case '/owner/dashboard':
+        return (
+          <>
+            <OwnerDashboardPage />
+            <Toast />
+          </>
+        );
+      case '/owner/products':
+        return (
+          <>
+            <OwnerProductsPage />
+            <Toast />
+          </>
+        );
+      case '/owner/products/new':
+        return (
+          <>
+            <OwnerProductFormPage mode="new" />
+            <Toast />
+          </>
+        );
+      case '/owner/products/edit':
+        return (
+          <>
+            <OwnerProductFormPage
+              mode="edit"
+              productId={currentRoute.productId}
+            />
+            <Toast />
+          </>
+        );
+      default:
+        return (
+          <>
+            <OwnerDashboardPage />
+            <Toast />
+          </>
+        );
+    }
+  }
+
+  // 2. Customer Storefront Routing Logic
   const renderCurrentPage = () => {
     switch (currentRoute.path) {
       case '/':
@@ -69,9 +127,13 @@ const AppContent: React.FC = () => {
 export default function App() {
   return (
     <NavigationProvider>
-      <CartProvider>
-        <AppContent />
-      </CartProvider>
+      <AuthProvider>
+        <ProductProvider>
+          <CartProvider>
+            <AppContent />
+          </CartProvider>
+        </ProductProvider>
+      </AuthProvider>
     </NavigationProvider>
   );
 }

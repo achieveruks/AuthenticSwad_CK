@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigation } from '../context/NavigationContext';
 import { useCart } from '../context/CartContext';
-import { PRODUCTS } from '../data/products';
+import { useProducts } from '../context/ProductContext';
 import { ProductGallery } from '../components/ProductGallery';
 import { QuantitySelector } from '../components/QuantitySelector';
 import { ProductCard } from '../components/ProductCard';
@@ -23,9 +23,9 @@ import {
   Utensils,
   Leaf,
   MessageSquare,
-  Truck
+  Truck,
+  AlertTriangle,
 } from 'lucide-react';
-import { motion } from 'motion/react';
 
 interface ProductDetailPageProps {
   slug: string;
@@ -34,16 +34,20 @@ interface ProductDetailPageProps {
 export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ slug }) => {
   const { goToHome, goToShop, goToCheckout } = useNavigation();
   const { addToCart, setIsCartDrawerOpen, showToast } = useCart();
+  const { allProducts, activeProducts } = useProducts();
 
-  const product = PRODUCTS.find((p) => p.slug === slug) || PRODUCTS[0];
+  const product =
+    allProducts.find((p) => p.slug === slug) ||
+    activeProducts.find((p) => p.slug === slug) ||
+    allProducts[0];
 
   // Selected variant state
   const [selectedVariant, setSelectedVariant] = useState<ProductVariant | undefined>(
-    product.variants && product.variants.length > 0 ? product.variants[0] : undefined
+    product?.variants && product.variants.length > 0 ? product.variants[0] : undefined
   );
 
   // Spice level state
-  const [selectedSpiceLevel, setSelectedSpiceLevel] = useState<string>(product.spiceLevel);
+  const [selectedSpiceLevel, setSelectedSpiceLevel] = useState<string>(product?.spiceLevel || 'Medium');
 
   // Selected add-ons state
   const [selectedAddons, setSelectedAddons] = useState<ProductAddon[]>([]);
@@ -55,11 +59,29 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ slug }) =>
   const [activeTab, setActiveTab] = useState<'details' | 'ingredients' | 'reheating' | 'reviews'>('details');
 
   // Customer Reviews state (allows adding new simulator review)
-  const [reviews, setReviews] = useState<Review[]>(product.reviewsList || []);
+  const [reviews, setReviews] = useState<Review[]>(product?.reviewsList || []);
   const [newReviewerName, setNewReviewerName] = useState('');
   const [newReviewRating, setNewReviewRating] = useState(5);
   const [newReviewComment, setNewReviewComment] = useState('');
   const [isAddingReview, setIsAddingReview] = useState(false);
+
+  if (!product) {
+    return (
+      <div className="max-w-7xl mx-auto px-4 py-16 text-center space-y-4">
+        <h2 className="text-xl font-bold text-gray-900">Product Not Found</h2>
+        <p className="text-xs text-gray-500">The requested delicacy might have been updated or removed.</p>
+        <button
+          type="button"
+          onClick={() => goToShop()}
+          className="px-4 py-2 bg-orange-600 text-white text-xs font-bold rounded-xl"
+        >
+          Browse Full Menu
+        </button>
+      </div>
+    );
+  }
+
+  const isItemInStock = product.inStock !== false;
 
   // Calculate pricing
   const basePrice = selectedVariant ? selectedVariant.price : product.price;
@@ -86,11 +108,13 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ slug }) =>
   };
 
   const handleAddToCart = () => {
+    if (!isItemInStock) return;
     addToCart(product, quantity, selectedVariant, selectedSpiceLevel, selectedAddons);
     setIsCartDrawerOpen(true);
   };
 
   const handleBuyNow = () => {
+    if (!isItemInStock) return;
     addToCart(product, quantity, selectedVariant, selectedSpiceLevel, selectedAddons);
     goToCheckout();
   };
@@ -124,7 +148,7 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ slug }) =>
   };
 
   // Related Delicacies
-  const relatedProducts = PRODUCTS.filter(
+  const relatedProducts = activeProducts.filter(
     (p) => p.id !== product.id && (p.category === product.category || p.bestseller)
   ).slice(0, 4);
 
@@ -279,9 +303,15 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ slug }) =>
             </div>
 
             <div className="text-right">
-              <span className="text-xs font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-200 inline-block">
-                In Stock
-              </span>
+              {isItemInStock ? (
+                <span className="text-xs font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-200 inline-block">
+                  In Stock
+                </span>
+              ) : (
+                <span className="text-xs font-semibold text-amber-800 bg-amber-50 px-2 py-0.5 rounded-md border border-amber-200 inline-block">
+                  Out of Stock
+                </span>
+              )}
             </div>
           </div>
 
@@ -415,19 +445,29 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ slug }) =>
                 type="button"
                 id="product-add-to-cart-btn"
                 onClick={handleAddToCart}
-                className="py-2.5 px-5 bg-orange-600 hover:bg-orange-700 active:bg-orange-800 text-white rounded-xl font-bold text-xs sm:text-sm shadow-xs transition-all flex items-center justify-center gap-1.5"
+                disabled={!isItemInStock}
+                className={`py-2.5 px-5 text-white rounded-xl font-bold text-xs sm:text-sm shadow-xs transition-all flex items-center justify-center gap-1.5 ${
+                  isItemInStock
+                    ? 'bg-orange-600 hover:bg-orange-700 active:bg-orange-800 cursor-pointer'
+                    : 'bg-gray-400 cursor-not-allowed opacity-75'
+                }`}
               >
                 <ShoppingBag className="w-4 h-4" />
-                <span>Add to Cart (₹{currentTotalPrice})</span>
+                <span>{isItemInStock ? `Add to Cart (₹${currentTotalPrice})` : 'Currently Out of Stock'}</span>
               </button>
 
               <button
                 type="button"
                 onClick={handleBuyNow}
-                className="py-2.5 px-5 bg-gray-900 hover:bg-black active:bg-gray-950 text-white rounded-xl font-bold text-xs sm:text-sm shadow-xs transition-all flex items-center justify-center gap-1.5"
+                disabled={!isItemInStock}
+                className={`py-2.5 px-5 text-white rounded-xl font-bold text-xs sm:text-sm shadow-xs transition-all flex items-center justify-center gap-1.5 ${
+                  isItemInStock
+                    ? 'bg-gray-900 hover:bg-black active:bg-gray-950 cursor-pointer'
+                    : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                }`}
               >
-                <Zap className="w-4 h-4 text-orange-400 fill-orange-400" />
-                <span>Express Buy Now</span>
+                <Zap className={`w-4 h-4 ${isItemInStock ? 'text-orange-400 fill-orange-400' : 'text-gray-400'}`} />
+                <span>{isItemInStock ? 'Express Buy Now' : 'Out of Stock'}</span>
               </button>
             </div>
 
